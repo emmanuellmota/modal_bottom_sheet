@@ -111,7 +111,7 @@ class _ModalBottomSheetState<T> extends State<_ModalBottomSheet<T>> {
   }
 }
 
-class ModalBottomSheetRoute<T> extends PopupRoute<T> {
+class ModalBottomSheetRoute<T> extends PageRoute<T> {
   ModalBottomSheetRoute({
     this.containerBuilder,
     this.builder,
@@ -199,6 +199,25 @@ class ModalBottomSheetRoute<T> extends PopupRoute<T> {
   @override
   bool canTransitionFrom(TransitionRoute<dynamic> previousRoute) =>
       previousRoute is ModalBottomSheetRoute || previousRoute is PageRoute;
+
+  @override
+  bool get fullscreenDialog => true;
+
+  @override
+  Curve get barrierCurve => super.barrierCurve;
+
+  @override
+  bool get opaque => false;
+
+  @override
+  bool get maintainState => true;
+
+  // Todo: This is dangerous to do. Check if there is a better way
+  // ModalBarrier animation only works if _offstage is false(is false by default)
+  // In PageRoute HeroController sets offstage to false and the animation for the
+  // modal barrier is not displayed even if there is no Hero widget
+  @override
+  set offstage(bool value) {}
 
   Widget getPreviousRouteTransition(
     BuildContext context,
